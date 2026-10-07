@@ -22,5 +22,5 @@
 		}
 	},
 	"remoteUser": "sail",
-	"postCreateCommand": "composer install && npm install && php artisan key:generate"
+	"postCreateCommand": "composer install && npm ci"
 }

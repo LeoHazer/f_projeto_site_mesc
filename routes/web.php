@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    // O nome aqui deve ser o nome exato do seu arquivo .tsx dentro de resources/js/Pages
     return Inertia::render('Home');
+});
+
+Route::get('/sobre', function () {
+    return Inertia::render('Sobre');
 });
 
 Route::get('/contato', function () {

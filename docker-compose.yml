@@ -21,6 +21,35 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
+        depends_on:
+            postgres:
+                condition: service_healthy
+
+    postgres:
+        image: postgres:16-alpine
+        restart: unless-stopped
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        environment:
+            POSTGRES_DB: '${DB_DATABASE:-mesc_dev}'
+            POSTGRES_USER: '${DB_USERNAME:-mesc}'
+            POSTGRES_PASSWORD: '${DB_PASSWORD:-mesc_dev}'
+        volumes:
+            - 'postgres-data:/var/lib/postgresql/data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD-SHELL
+                - pg_isready -U ${DB_USERNAME:-mesc} -d ${DB_DATABASE:-mesc_dev}
+            interval: 5s
+            timeout: 5s
+            retries: 10
+
 networks:
     sail:
         driver: bridge
+
+volumes:
+    postgres-data:
+        driver: local
